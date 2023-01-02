@@ -48,10 +48,17 @@ func handleConnection(conn net.Conn, c chan string) {
 
 	if err != nil {
 		fmt.Println("The read error is: ", err.Error())
+		os.Exit(1)
 	}
 
 	fmt.Println("Read content length is: ", length)
 	fmt.Println("The content is: ", string(content))
+
+	_, error := conn.Write([]byte("+PONG\r\n"))
+	if error != nil {
+		fmt.Println("The write error is: ", err.Error())
+		os.Exit(1)
+	}
 
 	c <- "traffic handled"
 }
