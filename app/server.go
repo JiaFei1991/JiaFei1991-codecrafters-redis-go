@@ -30,9 +30,8 @@ func main() {
 			os.Exit(1)
 		}
 		go handleConnection(conn, c)
+		fmt.Println(<- c)
 	}
-
-	fmt.Println(<- c)
 }
 
 func handleConnection(conn net.Conn, c chan string) {
