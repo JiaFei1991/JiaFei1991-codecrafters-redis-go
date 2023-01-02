@@ -29,17 +29,24 @@ func main() {
 			fmt.Println("Error accepting connection: ", err.Error())
 			os.Exit(1)
 		}
-		go handleConnection(conn, c)
-	}
-
-	for {
-		fmt.Println(<- c)
+		handleConnection(conn, c)
+		// fmt.Println(<- c)
 	}
 }
 
 func handleConnection(conn net.Conn, c chan string) {
-	content := []byte{}
+	cTraffic := make(chan string)
 
+	for {
+		go handleTraffic(conn, cTraffic)
+		fmt.Println(<- c)
+		// c <- "one connection handled"
+	}
+
+}
+
+func handleTraffic(conn net.Conn, cTraffic chan string) {
+	content := []byte{}
 	length, err := conn.Read(content)
 
 	if err != nil {
@@ -56,5 +63,5 @@ func handleConnection(conn net.Conn, c chan string) {
 		os.Exit(1)
 	}
 
-	c <- "one traffic handled"
+	cTraffic <- "traffic handled"
 }
