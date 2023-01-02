@@ -37,6 +37,8 @@ func main() {
 		}
 		go handleConnection(conn, c)
 	}
+
+	fmt.Println(<- c)
 }
 
 func handleConnection(conn net.Conn, c chan string) {
@@ -50,4 +52,6 @@ func handleConnection(conn net.Conn, c chan string) {
 
 	fmt.Println("Read content length is: ", length)
 	fmt.Println("The content is: ", string(content))
+
+	c <- "traffic handled"
 }
