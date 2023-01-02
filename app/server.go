@@ -38,28 +38,28 @@ func handleConnection(conn net.Conn, c chan string) {
 	cTraffic := make(chan string)
 
 	for {
-		go handleTraffic(conn, cTraffic)
+		content := []byte{}
+		_, err := conn.Read(content)
+		
+		if err != nil {
+			fmt.Println("The read error is: ", err.Error())
+			os.Exit(1)
+		}
+		
+		go handleTraffic(content, conn, cTraffic)
+
 		fmt.Println(<- c)
 		// c <- "one connection handled"
 	}
 
 }
 
-func handleTraffic(conn net.Conn, cTraffic chan string) {
-	content := []byte{}
-	length, err := conn.Read(content)
-
-	if err != nil {
-		fmt.Println("The read error is: ", err.Error())
-		os.Exit(1)
-	}
-
-	fmt.Println("Read content length is: ", length)
+func handleTraffic(content []byte, conn net.Conn, cTraffic chan string) {
 	fmt.Println("The content is: ", string(content))
 
-	_, error := conn.Write([]byte("+PONG\r\n"))
-	if error != nil {
-		fmt.Println("The write error is: ", err.Error())
+	_, myError := conn.Write([]byte("+PONG\r\n"))
+	if myError != nil {
+		fmt.Println("The write error is: ", myError.Error())
 		os.Exit(1)
 	}
 
