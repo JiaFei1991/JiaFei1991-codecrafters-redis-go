@@ -36,9 +36,9 @@ func main() {
 
 func handleConnection(conn net.Conn, c chan string) {
 	cTraffic := make(chan string)
-	content := []byte{}
-
+	
 	for {
+		content := []byte{}
 		_, err := conn.Read(content)
 		
 		if err != nil {
