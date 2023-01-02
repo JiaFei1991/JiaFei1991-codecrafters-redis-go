@@ -56,7 +56,7 @@ func handleConnection(conn net.Conn, c chan string) {
 }
 
 func handleTraffic(content []byte, conn net.Conn, cTraffic chan string) {
-	fmt.Println("The content is: ", string(content))
+	// fmt.Println("The content is: ", string(content))
 
 	_, myError := conn.Write([]byte("+PONG\r\n"))
 	if myError != nil {
