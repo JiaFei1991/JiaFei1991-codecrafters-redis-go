@@ -46,19 +46,20 @@ func handleConnection(conn net.Conn, c chan string) {
 		// length, err := conn.Read(buf)
 
 		message, err := bufio.NewReader(conn).ReadString('\n')
-		
 		if err != nil {
 			fmt.Println("The read error is: ", err.Error())
 			os.Exit(1)
 		}
+
+		fmt.Println("The content is: ", message)
 		match := sampleRegexp.Match([]byte(message))
 		if match {
 			fmt.Println("The content is: ", message)
-		}
-		_, myError := conn.Write([]byte("+PONG\r\n"))
-		if myError != nil {
-			fmt.Println("The write error is: ", myError.Error())
-			os.Exit(1)
+			_, myError := conn.Write([]byte("+PONG\r\n"))
+			if myError != nil {
+				fmt.Println("The write error is: ", myError.Error())
+				os.Exit(1)
+			}
 		}
 		// fmt.Println("The length is: ", length)
 		
