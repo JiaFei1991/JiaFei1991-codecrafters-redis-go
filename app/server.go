@@ -31,7 +31,6 @@ func main() {
 		}
 		go handleConnection(conn, c)
 		fmt.Println(<- c)
-		conn.Close()
 	}
 }
 
