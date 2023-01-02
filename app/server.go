@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"net"
 	"os"
+	"regexp"
 	// Uncomment this block to pass the first stage
 	// "net"
 	// "os"
@@ -37,21 +39,31 @@ func main() {
 
 func handleConnection(conn net.Conn, c chan string) {
 	// cTraffic := make(chan string)
+	sampleRegexp := regexp.MustCompile("ping")
 	
-	buf := make([]byte, 4096)
-	length, err := conn.Read(buf)
-	if err != nil {
-		fmt.Println("The read error is: ", err.Error())
-		os.Exit(1)
-	}
-	fmt.Println("The length is: ", length)
-	fmt.Println("The content is: ", string(buf))
-	
-	
-	_, myError := conn.Write([]byte("+PONG\r\n"))
-	if myError != nil {
-		fmt.Println("The write error is: ", myError.Error())
-		os.Exit(1)
+	for {
+		// buf := make([]byte, 4096)
+		// length, err := conn.Read(buf)
+
+		message, err := bufio.NewReader(conn).ReadString('\n')
+		
+		if err != nil {
+			fmt.Println("The read error is: ", err.Error())
+			os.Exit(1)
+		}
+		match := sampleRegexp.Match([]byte(message))
+		if match {
+			fmt.Println("The content is: ", message)
+		}
+		_, myError := conn.Write([]byte("+PONG\r\n"))
+		if myError != nil {
+			fmt.Println("The write error is: ", myError.Error())
+			os.Exit(1)
+		}
+		// fmt.Println("The length is: ", length)
+		
+		
+
 	}
 
 
