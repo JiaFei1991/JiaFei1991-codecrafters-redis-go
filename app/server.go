@@ -53,5 +53,5 @@ func handleConnection(conn net.Conn, c chan string) {
 		os.Exit(1)
 	}
 
-	c <- "traffic handled"
+	c <- "one traffic handled"
 }
