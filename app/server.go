@@ -29,6 +29,7 @@ func main() {
 			fmt.Println("Error accepting connection: ", err.Error())
 			os.Exit(1)
 		}
+		defer conn.Close()
 		handleConnection(conn, c)
 		// fmt.Println(<- c)
 	}
@@ -37,28 +38,30 @@ func main() {
 func handleConnection(conn net.Conn, c chan string) {
 	// cTraffic := make(chan string)
 	
-	for {
-		// content := []byte{}
-		// _, err := conn.Read(content)
-		
-		// if err != nil {
-		// 	fmt.Println("The read error is: ", err.Error())
-		// 	os.Exit(1)
-		// }
-		
-		// go handleTraffic(content, conn, cTraffic)
-
-		// <- cTraffic
-		// fmt.Println(<- cTraffic)
-		// c <- "one connection handled"
-
-		_, myError := conn.Write([]byte("+PONG\r\n"))
-		if myError != nil {
-			fmt.Println("The write error is: ", myError.Error())
-			os.Exit(1)
-		}
-
+	buf := make([]byte, 0, 4096)
+	length, err := conn.Read(buf)
+	if err != nil {
+		fmt.Println("The read error is: ", err.Error())
+		os.Exit(1)
 	}
+	fmt.Println("The length is: ", length)
+	fmt.Println("The content is: ", string(buf))
+	
+	
+
+
+	_, myError := conn.Write([]byte("+PONG\r\n"))
+	if myError != nil {
+		fmt.Println("The write error is: ", myError.Error())
+		os.Exit(1)
+	}
+
+
+	// go handleTraffic(content, conn, cTraffic)
+
+	// <- cTraffic
+	// fmt.Println(<- cTraffic)
+	// c <- "one connection handled"
 
 }
 
