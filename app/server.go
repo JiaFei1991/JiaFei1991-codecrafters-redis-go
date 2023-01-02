@@ -38,7 +38,7 @@ func main() {
 func handleConnection(conn net.Conn, c chan string) {
 	// cTraffic := make(chan string)
 	
-	buf := make([]byte, 0, 4096)
+	buf := make([]byte, 4096)
 	length, err := conn.Read(buf)
 	if err != nil {
 		fmt.Println("The read error is: ", err.Error())
@@ -48,8 +48,6 @@ func handleConnection(conn net.Conn, c chan string) {
 	fmt.Println("The content is: ", string(buf))
 	
 	
-
-
 	_, myError := conn.Write([]byte("+PONG\r\n"))
 	if myError != nil {
 		fmt.Println("The write error is: ", myError.Error())
