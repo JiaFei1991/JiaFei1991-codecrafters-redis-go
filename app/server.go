@@ -48,7 +48,8 @@ func handleConnection(conn net.Conn, c chan string) {
 		
 		go handleTraffic(content, conn, cTraffic)
 
-		fmt.Println(<- cTraffic)
+		<- cTraffic
+		// fmt.Println(<- cTraffic)
 		// c <- "one connection handled"
 	}
 
