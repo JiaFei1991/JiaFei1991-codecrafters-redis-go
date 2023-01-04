@@ -31,12 +31,12 @@ func main() {
 			os.Exit(1)
 		}
 		defer conn.Close()
-		go handleConnection(conn, c)
-		fmt.Println(<- c)
+		go handleConnection(conn)
+		// fmt.Println(<- c)
 	}
 }
 
-func handleConnection(conn net.Conn, c chan string) {
+func handleConnection(conn net.Conn) {
 	// cTraffic := make(chan string)
 	
 	for {
@@ -60,7 +60,7 @@ func handleConnection(conn net.Conn, c chan string) {
 			os.Exit(1)
 		}
 		
-		c <- "one connection handled"
+		// c <- "one connection handled"
 	}
 
 
