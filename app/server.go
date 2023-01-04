@@ -31,8 +31,8 @@ func main() {
 			os.Exit(1)
 		}
 		defer conn.Close()
-		handleConnection(conn, c)
-		// fmt.Println(<- c)
+		go handleConnection(conn, c)
+		fmt.Println(<- c)
 	}
 }
 
@@ -59,7 +59,8 @@ func handleConnection(conn net.Conn, c chan string) {
 			fmt.Println("The write error is: ", myError.Error())
 			os.Exit(1)
 		}
-	
+		
+		c <- "one connection handled"
 	}
 
 
