@@ -22,7 +22,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	c := make(chan string)
+	// c := make(chan string)
 
 	for {
 		conn, err := l.Accept()
